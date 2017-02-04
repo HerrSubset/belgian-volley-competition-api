@@ -2,6 +2,7 @@ package com.clubtools.belgianvolleycompetitionapi.rest;
 
 import com.clubtools.belgianvolleycompetitionapi.core.dao.FederationDao;
 import com.clubtools.belgianvolleycompetitionapi.core.dao.LeagueDao;
+import com.clubtools.belgianvolleycompetitionapi.core.dao.TeamDao;
 import com.clubtools.belgianvolleycompetitionapi.core.dao.TotalOverviewDao;
 import com.clubtools.belgianvolleycompetitionapi.core.service.FederationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,15 @@ public class FederationController {
 
         LeagueDao league = service.getLeague(abbreviation, leagueSlug);
         return new ResponseEntity<>(league, HttpStatus.OK);
+    }
+
+    @RequestMapping("/federations/{abbreviation}/leagues/{leagueslug}/teams/{teamslug}")
+    public HttpEntity<TeamDao> getTeam(
+            @PathVariable("abbreviation") String abbreviation,
+            @PathVariable("leagueslug") String leagueSlug,
+            @PathVariable("teamslug") String teamSlug) {
+
+        TeamDao team = service.getTeam(abbreviation, leagueSlug, teamSlug);
+        return new ResponseEntity<>(team, HttpStatus.OK);
     }
 }

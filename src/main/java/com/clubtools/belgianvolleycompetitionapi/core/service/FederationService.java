@@ -1,10 +1,7 @@
 package com.clubtools.belgianvolleycompetitionapi.core.service;
 
 import com.clubtools.belgianvolleycompetitionapi.core.cache.FederationCache;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.FederationDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.LeagueDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.MinimalFederationDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.TotalOverviewDao;
+import com.clubtools.belgianvolleycompetitionapi.core.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +59,10 @@ public class FederationService {
     private FederationCache getCache(String abbreviation) {
         // TODO: throw error causing 404 when federation is not found
         return routeMap.get(abbreviation.toUpperCase());
+    }
+
+    public TeamDao getTeam(String federationAbbreviation, String leagueSlug, String teamSlug) {
+        FederationCache cache = getCache(federationAbbreviation);
+        return cache.getTeam(leagueSlug, teamSlug);
     }
 }

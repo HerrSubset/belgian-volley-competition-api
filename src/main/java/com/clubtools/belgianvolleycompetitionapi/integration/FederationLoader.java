@@ -13,5 +13,7 @@ public interface FederationLoader {
 
     List<LeagueId> getLeagueIds();
 
-    League getLeague(String leagueSlug);
+    League getLeague(LeagueId leagueId);
+
+    LeagueId getLeagueId(String leagueSlug);
 }

@@ -1,5 +1,7 @@
 package com.clubtools.belgianvolleycompetitionapi.domain;
 
+import java.util.List;
+
 /**
  * @Author: HerrSubset
  * @Created: 2/4/17
@@ -7,13 +9,19 @@ package com.clubtools.belgianvolleycompetitionapi.domain;
 public class Team {
 
     private String name;
+    private List<Game> games;
 
-    public Team(String name) {
+    public Team(String name, List<Game> games) {
         this.name = name;
+        this.games = games;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Game> getGames() {
+        return games;
     }
 
 

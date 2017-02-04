@@ -3,7 +3,6 @@ package com.clubtools.belgianvolleycompetitionapi.integration;
 import com.clubtools.belgianvolleycompetitionapi.domain.Game;
 import com.clubtools.belgianvolleycompetitionapi.domain.League;
 import com.clubtools.belgianvolleycompetitionapi.domain.LeagueId;
-import com.clubtools.belgianvolleycompetitionapi.domain.Team;
 import com.google.common.io.CharStreams;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -104,8 +103,8 @@ public class VvbLoader implements FederationLoader {
     }
 
     @Override
-    public League getLeague(String leagueSlug) {
-        JsonArray jsonArray = getLeagueGamesJsonArray(leagueSlug);
+    public League getLeague(LeagueId leagueId) {
+        JsonArray jsonArray = getLeagueGamesJsonArray(leagueId.getId());
         Iterator<JsonElement> iterator = jsonArray.iterator();
         List<Game> games = new ArrayList<>();
 
@@ -114,20 +113,28 @@ public class VvbLoader implements FederationLoader {
             games.add(createGame(object));
         }
 
-        return new League(games);
+        return new League(leagueId, games);
+    }
+
+    @Override
+    public LeagueId getLeagueId(String leagueSlug) {
+        for (LeagueId id : getLeagueIds()) {
+            if (id.getId().equalsIgnoreCase(leagueSlug)) return id;
+        }
+        throw new RuntimeException("could not find league with id " + leagueSlug);
+
     }
 
     private Game createGame(JsonObject object) {
-        String homeTeam = object.get("thuisploeg").getAsString();
-        String awayTeam = object.get("bezoekers").getAsString();
-        String day = object.get("Datum").getAsString();
-        String time = object.get("aanvangsuur").getAsString();
+        String homeTeam = object.get("thuisploeg").getAsString().trim();
+        String awayTeam = object.get("bezoekers").getAsString().trim();
+        String day = object.get("Datum").getAsString().trim();
+        String time = object.get("aanvangsuur").getAsString().trim();
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date;
         try {
             String fullDateString = day + " " + time;
-            System.out.println("Parsing: " + fullDateString);
             date = format.parse(fullDateString);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -156,7 +163,6 @@ public class VvbLoader implements FederationLoader {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Sending request to: " + uri.toString());
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(uri);
 
@@ -170,7 +176,6 @@ public class VvbLoader implements FederationLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Json response: " + json);
 
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);

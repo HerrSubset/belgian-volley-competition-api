@@ -19,7 +19,12 @@ public class KovvLoader implements FederationLoader {
     }
 
     @Override
-    public League getLeague(String leagueSlug) {
+    public League getLeague(LeagueId leagueId) {
+        return null;
+    }
+
+    @Override
+    public LeagueId getLeagueId(String leagueSlug) {
         return null;
     }
 }

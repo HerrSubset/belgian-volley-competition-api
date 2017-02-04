@@ -15,7 +15,7 @@ public class LeagueDao {
         this.teams = teams;
     }
 
-    public LeagueDao(League league) {
-        this.teams = league.getBasicTeamInfo();
+    public LeagueDao(League league, String federationAbbreviation) {
+        this.teams = league.getBasicTeamInfo(federationAbbreviation);
     }
 }

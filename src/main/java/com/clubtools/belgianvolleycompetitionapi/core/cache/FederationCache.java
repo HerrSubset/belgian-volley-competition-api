@@ -1,11 +1,9 @@
 package com.clubtools.belgianvolleycompetitionapi.core.cache;
 
-import com.clubtools.belgianvolleycompetitionapi.core.dao.FederationDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.LeagueDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.MinimalFederationDao;
-import com.clubtools.belgianvolleycompetitionapi.core.dao.MinimalLeagueDao;
+import com.clubtools.belgianvolleycompetitionapi.core.dao.*;
 import com.clubtools.belgianvolleycompetitionapi.domain.League;
 import com.clubtools.belgianvolleycompetitionapi.domain.LeagueId;
+import com.clubtools.belgianvolleycompetitionapi.domain.Team;
 import com.clubtools.belgianvolleycompetitionapi.integration.FederationLoader;
 
 import java.util.ArrayList;
@@ -58,7 +56,19 @@ public abstract class FederationCache {
     }
 
     public LeagueDao getLeague(String leagueSlug) {
-        League league = loader.getLeague(leagueSlug);
-        return new LeagueDao(league);
+        League league = getLeagueBySlug(leagueSlug);
+        return new LeagueDao(league, abbreviation);
+    }
+
+    public TeamDao getTeam(String leagueSlug, String teamSlug) {
+        League league = getLeagueBySlug(leagueSlug);
+        Team team = league.getTeamBySlug(teamSlug);
+        return new TeamDao(team);
+    }
+
+
+    private League getLeagueBySlug(String leagueSlug) {
+        LeagueId leagueId = loader.getLeagueId(leagueSlug);
+        return loader.getLeague(leagueId);
     }
 }
