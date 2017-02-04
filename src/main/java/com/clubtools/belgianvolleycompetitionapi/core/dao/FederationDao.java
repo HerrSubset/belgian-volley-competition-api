@@ -8,9 +8,9 @@ import java.util.List;
  */
 public class FederationDao {
 
-    public final List<String> leagueNames;
+    public final List<MinimalLeagueDao> leagues;
 
-    public FederationDao(List<String> leagueNames) {
-        this.leagueNames = leagueNames;
+    public FederationDao(List<MinimalLeagueDao> leagues) {
+        this.leagues = leagues;
     }
 }

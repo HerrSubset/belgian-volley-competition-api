@@ -1,5 +1,6 @@
 package com.clubtools.belgianvolleycompetitionapi.integration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,13 @@ import java.util.List;
 public class KovvLoader implements FederationLoader {
     @Override
     public List<String> getLeagueNames() {
-        return null;
+        ArrayList<String> names = new ArrayList<>();
+        names.add("1ste provinciale heren");
+        names.add("2de provinciale heren A");
+        names.add("2de provinciale heren B");
+        names.add("1ste provinciale dames");
+        names.add("2de provinciale dames A");
+        names.add("2de provinciale dames B");
+        return names;
     }
 }

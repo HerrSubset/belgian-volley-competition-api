@@ -2,8 +2,10 @@ package com.clubtools.belgianvolleycompetitionapi.core.cache;
 
 import com.clubtools.belgianvolleycompetitionapi.core.dao.FederationDao;
 import com.clubtools.belgianvolleycompetitionapi.core.dao.MinimalFederationDao;
+import com.clubtools.belgianvolleycompetitionapi.core.dao.MinimalLeagueDao;
 import com.clubtools.belgianvolleycompetitionapi.integration.FederationLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,8 +40,13 @@ public abstract class FederationCache {
     //**************************************************************************
 
     public FederationDao getFederationInfo() {
-        List<String> leagueNames = loader.getLeagueNames();
-        return new FederationDao(leagueNames);
+        List<MinimalLeagueDao> leagues = new ArrayList<>();
+
+        for (String name : loader.getLeagueNames()) {
+            leagues.add(new MinimalLeagueDao(name, abbreviation));
+        }
+
+        return new FederationDao(leagues);
     }
 
 

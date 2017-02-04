@@ -29,6 +29,7 @@ public class FederationController {
 
     @RequestMapping("/federations/{abbreviation}")
     public HttpEntity<FederationDao> getFederation(@PathVariable String abbreviation) {
-        return null;
+        FederationDao federation = service.getFederationLeagues(abbreviation);
+        return new ResponseEntity<>(federation, HttpStatus.OK);
     }
 }
