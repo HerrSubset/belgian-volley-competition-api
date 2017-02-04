@@ -1,4 +1,10 @@
 language: java
-
 jdk:
-    - oraclejdk8
+- oraclejdk8
+deploy:
+  provider: heroku
+  api_key:
+    secure: Hz54AolA+dYlSz3YFqGhzT+OmoMVhzLUVGDp9QbnRH5/QHiVz7qhTsdF2Q4cNrrTqW8Fz1bKYWCWZ9uHoOrMtD6/Ie3OJmHHErYxwsXmQ1dNGKAO3TLtKrjW4JY9a4w0kLyliJD9PjzjdtNR6Ym47p/feImzuxLyp4ZiEKqggjhSglgWWyHFr771r9TdmNT0YkgPRnpWeGnhsWFSIASrWhpocnP+LFkq0kZa5msOpeuFXjGqrqjSK2kthQZlhDHJUNZqNr+CNlihazZ4X+vZXYxo8k4p3ql1KbvvcugAd8qKzBlDZIVg4iS2O5znRSnp+gCcmrWO2ZA0ToBK50Z9XxDY9HRaHUvEvILItrtQHpI/2JBFhmLUw+/G/vdHju3lA9fIOdX27ayoWJdFgTB9JuQyOwUukqsKleYwI5c/aYFOIxv3K/zXaxMkg8zHGtet5VkEFpMOktRXp67WpJh5jaYJWpL88wvJajjnNdzD64Li3tDTBb7ze0yXg7+J8Oob2EiXNTMoaHa5nXaREXb5V9QvhN0XmvFg6u7LuiSkYV5UrJvsahmLTI3g8KiCOI0HoW7RjWcLewKSqjmnONGNgK96V6uLLZtP+Ww+VL7f9WQ+3FvxGz/08cy3+9q8Zj8L6Yc/AvhI9JRazgqIFSkAlgWHCuh9tIUJVTwuVm6rDVw=
+  app: bvc-api
+  on:
+    repo: HerrSubset/belgian-volley-competition-api
