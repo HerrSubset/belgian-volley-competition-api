@@ -6,18 +6,18 @@ package com.clubtools.belgianvolleycompetitionapi.domain;
  */
 public class LeagueId {
     private String name;
-    private String abbreviation;
+    private String id;
 
-    public LeagueId(String name, String abbreviation) {
+    public LeagueId(String name, String id) {
         this.name = name;
-        this.abbreviation = abbreviation;
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getAbbreviation() {
-        return abbreviation;
+    public String getId() {
+        return id;
     }
 }

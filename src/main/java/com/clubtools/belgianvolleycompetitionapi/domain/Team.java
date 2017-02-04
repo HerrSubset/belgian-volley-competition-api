@@ -15,4 +15,20 @@ public class Team {
     public String getName() {
         return name;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Team)) return false;
+
+        Team team = (Team) o;
+
+        return name.equals(team.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

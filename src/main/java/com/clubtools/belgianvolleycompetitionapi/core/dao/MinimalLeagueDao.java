@@ -18,11 +18,11 @@ public class MinimalLeagueDao extends ResourceSupport  {
 
     public MinimalLeagueDao(LeagueId leagueId, String federationAbbreviation) {
         this.name = leagueId.getName();
-        this.abbreviation = leagueId.getAbbreviation();
+        this.abbreviation = leagueId.getId();
 
         // add links for further querying
         this.add(linkTo(methodOn(FederationController.class)
-                .getLeague(UrlUtils.sluggify(federationAbbreviation), UrlUtils.sluggify(name)))
+                .getLeague(UrlUtils.sluggify(federationAbbreviation), UrlUtils.sluggify(leagueId.getId())))
                 .withRel("details"));
 
         this.add(linkTo(methodOn(FederationController.class)
