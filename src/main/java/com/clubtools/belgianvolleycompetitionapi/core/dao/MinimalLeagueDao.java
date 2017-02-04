@@ -19,7 +19,7 @@ public class MinimalLeagueDao extends ResourceSupport  {
 
         // add links for further querying
         this.add(linkTo(methodOn(FederationController.class)
-                .getFederation(UrlUtils.sluggify(name)))
+                .getLeague(UrlUtils.sluggify(federationAbbreviation), UrlUtils.sluggify(name)))
                 .withRel("details"));
 
         this.add(linkTo(methodOn(FederationController.class)

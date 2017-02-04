@@ -1,5 +1,7 @@
 package com.clubtools.belgianvolleycompetitionapi.integration;
 
+import com.clubtools.belgianvolleycompetitionapi.domain.League;
+
 import java.util.List;
 
 /**
@@ -8,4 +10,7 @@ import java.util.List;
  */
 public interface FederationLoader {
 
-    List<String> getLeagueNames();}
+    List<String> getLeagueNames();
+
+    League getLeague(String leagueSlug);
+}
