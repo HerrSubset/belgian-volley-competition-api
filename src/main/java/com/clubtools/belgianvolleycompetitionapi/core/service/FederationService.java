@@ -5,11 +5,12 @@ import com.clubtools.belgianvolleycompetitionapi.core.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @Author: HerrSubset
@@ -18,16 +19,14 @@ import java.util.List;
 @Service
 public class FederationService {
 
-    @Autowired
-    private Collection<FederationCache> federationCaches;
-
     private HashMap<String, FederationCache> routeMap;
 
 
-    @PostConstruct
-    public void setUp() {
-        routeMap = new HashMap<>();
+    @Autowired
+    public FederationService(Collection<FederationCache> federationCaches) {
+        checkNotNull(federationCaches);
 
+        routeMap = new HashMap<>();
         for (FederationCache cache : federationCaches) {
             routeMap.put(cache.getAbbreviation().toUpperCase(), cache);
         }
@@ -37,7 +36,7 @@ public class FederationService {
     public TotalOverviewDao getOverview() {
         List<MinimalFederationDao> federations = new ArrayList<>();
 
-        for (FederationCache cache : federationCaches) {
+        for (FederationCache cache : routeMap.values()) {
             federations.add(cache.getMinimalDao());
         }
 

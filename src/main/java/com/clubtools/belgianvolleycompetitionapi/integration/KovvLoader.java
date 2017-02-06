@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,6 +36,7 @@ import java.util.List;
  * @Author: HerrSubset
  * @Created: 2/4/17
  */
+@Component
 public class KovvLoader implements FederationLoader {
 
     private final static String API_HOST = "volleybieb.be";

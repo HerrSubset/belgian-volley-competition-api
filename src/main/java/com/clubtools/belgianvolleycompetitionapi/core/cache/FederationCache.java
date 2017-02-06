@@ -21,6 +21,14 @@ public abstract class FederationCache {
     protected FederationLoader loader;
 
     //**************************************************************************
+    //* Constructor
+    //**************************************************************************
+
+    public FederationCache(FederationLoader loader) {
+        this.loader = loader;
+    }
+
+    //**************************************************************************
     //* Getters / Setters
     //**************************************************************************
 

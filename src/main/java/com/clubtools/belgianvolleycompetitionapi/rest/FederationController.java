@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @Author: HerrSubset
  * @Created: 2/4/17
@@ -20,8 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FederationController {
 
-    @Autowired
     private FederationService service;
+
+    @Autowired
+    public FederationController(FederationService service) {
+        checkNotNull(service);
+        this.service = service;
+    }
 
     @RequestMapping("/federations")
     public HttpEntity<TotalOverviewDao> getOverview() {

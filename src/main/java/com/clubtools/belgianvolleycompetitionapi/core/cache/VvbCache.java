@@ -1,9 +1,10 @@
 package com.clubtools.belgianvolleycompetitionapi.core.cache;
 
 import com.clubtools.belgianvolleycompetitionapi.integration.VvbLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @Author: HerrSubset
@@ -12,10 +13,11 @@ import javax.annotation.PostConstruct;
 @Component
 public class VvbCache extends FederationCache {
 
-    @PostConstruct
-    public void setUp() {
+    @Autowired
+    public VvbCache(VvbLoader loader) {
+        super(loader);
+        checkNotNull(loader);
         name = "Vlaamse Volleybalbond";
         abbreviation = "VVB";
-        loader = new VvbLoader();
     }
 }
