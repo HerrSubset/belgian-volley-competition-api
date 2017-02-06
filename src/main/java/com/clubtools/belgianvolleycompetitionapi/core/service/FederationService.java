@@ -20,18 +20,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class FederationService {
 
     private HashMap<String, FederationCache> routeMap;
+    private Collection<FederationCache> federationCaches;
 
 
     @Autowired
     public FederationService(Collection<FederationCache> federationCaches) {
         checkNotNull(federationCaches);
+        this.federationCaches = federationCaches;
 
         routeMap = new HashMap<>();
         for (FederationCache cache : federationCaches) {
             routeMap.put(cache.getAbbreviation().toUpperCase(), cache);
         }
     }
-
 
     public TotalOverviewDao getOverview() {
         List<MinimalFederationDao> federations = new ArrayList<>();
