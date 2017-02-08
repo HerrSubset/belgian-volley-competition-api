@@ -133,6 +133,14 @@ public class KovvLoader implements FederationLoader {
         String day = object.get("Datum").getAsString().trim();
         String time = object.get("aanvangsuur").getAsString().trim();
 
+        String score = object.get("resulthoofd").getAsString().trim();
+        Integer homeSets = null;
+        Integer awaySets = null;
+        if (score.length() == 5) {
+            homeSets = Integer.parseInt(score.substring(0, 1));
+            awaySets = Integer.parseInt(score.substring(4, 5));
+        }
+
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date;
         try {
@@ -142,7 +150,7 @@ public class KovvLoader implements FederationLoader {
             throw new RuntimeException(e);
         }
 
-        return new Game(homeTeam, awayTeam, date);
+        return new Game(homeTeam, awayTeam, date, homeSets, awaySets);
     }
 
     private JsonArray getLeagueGamesJsonArray(String leagueId) {
