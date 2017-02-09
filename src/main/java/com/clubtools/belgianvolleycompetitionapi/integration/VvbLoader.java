@@ -19,7 +19,7 @@ public class VvbLoader implements FederationLoader {
     public VvbLoader(VolleyBiebLoader volleyBiebLoader) {
         this.volleyBiebLoader = volleyBiebLoader;
     }
-    
+
     @Override
     public List<LeagueId> getLeagueIds() {
         return volleyBiebLoader.getLeagueIds(PROVINCE_CODE);

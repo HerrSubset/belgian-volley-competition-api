@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @Author: HerrSubset
- * @Created: 2/4/17
- */
+
 @Component
 public class KovvCache extends FederationCache {
 

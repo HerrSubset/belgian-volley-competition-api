@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @Author: HerrSubset
- * @Created: 2/4/17
- */
+
 public class League {
     private LeagueId id;
     private List<Game> games;
@@ -19,6 +16,14 @@ public class League {
     public League(LeagueId id, List<Game> games) {
         this.id = id;
         this.games = games;
+    }
+
+    public String getId() {
+        return id.getId();
+    }
+
+    public String getName() {
+        return id.getName();
     }
 
     public List<MinimalTeamDao> getBasicTeamInfo(String federationAbbreviation) {

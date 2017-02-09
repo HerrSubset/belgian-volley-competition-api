@@ -9,10 +9,6 @@ import com.clubtools.belgianvolleycompetitionapi.integration.FederationLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @Author: HerrSubset
- * @Created: 2/4/17
- */
 public abstract class FederationCache {
 
     protected String name;
@@ -52,10 +48,10 @@ public abstract class FederationCache {
         List<MinimalLeagueDao> leagues = new ArrayList<>();
 
         for (LeagueId id : loader.getLeagueIds()) {
-            leagues.add(new MinimalLeagueDao(id, abbreviation));
+            leagues.add(new MinimalLeagueDao(id));
         }
 
-        return new FederationDao(leagues);
+        return new FederationDao(name, abbreviation, leagues);
     }
 
 

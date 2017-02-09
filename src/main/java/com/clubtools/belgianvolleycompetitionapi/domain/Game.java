@@ -2,10 +2,7 @@ package com.clubtools.belgianvolleycompetitionapi.domain;
 
 import java.util.Date;
 
-/**
- * @Author: HerrSubset
- * @Created: 2/4/17
- */
+
 public class Game {
     private String homeTeam;
     private String awayTeam;

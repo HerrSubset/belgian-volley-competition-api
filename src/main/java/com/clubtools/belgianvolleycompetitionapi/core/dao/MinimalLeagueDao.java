@@ -8,25 +8,19 @@ import org.springframework.hateoas.ResourceSupport;
 import static org.springframework.hateoas.core.DummyInvocationUtils.methodOn;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-/**
- * @Author: HerrSubset
- * @Created: 2/4/17
- */
+
 public class MinimalLeagueDao extends ResourceSupport  {
     public final String name;
     public final String abbreviation;
 
-    public MinimalLeagueDao(LeagueId leagueId, String federationAbbreviation) {
+    public MinimalLeagueDao(LeagueId leagueId) {
         this.name = leagueId.getName();
         this.abbreviation = leagueId.getId();
+    }
 
-        // add links for further querying
+    public void addLinks(String federationAbbreviation) {
         this.add(linkTo(methodOn(FederationController.class)
-                .getLeague(UrlUtils.sluggify(federationAbbreviation), UrlUtils.sluggify(leagueId.getId())))
+                .getLeague(UrlUtils.sluggify(federationAbbreviation), UrlUtils.sluggify(abbreviation)))
                 .withRel("details"));
-
-        this.add(linkTo(methodOn(FederationController.class)
-                .getFederation(UrlUtils.sluggify(federationAbbreviation)))
-                .withRel("federation"));
     }
 }
