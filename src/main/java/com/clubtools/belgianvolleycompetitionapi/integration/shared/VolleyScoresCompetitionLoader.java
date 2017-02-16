@@ -6,6 +6,8 @@ import com.clubtools.belgianvolleycompetitionapi.domain.LeagueId;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,16 +21,20 @@ import java.util.List;
 @Component
 public class VolleyScoresCompetitionLoader {
 
-    private final static String API_HOST = "http://www.volleyscores.be/";
+    private final static String API_HOST = "http://www.volleyscores.be";
     private final static String API_PATH = "/index.php?";
     private final static String API_QUERY_PARAMS = "a=sd&w=%&ssi=";
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     public List<LeagueId> getLeagueIds(String provinceId) {
         Document document = null;
         try {
+            logger.info("Connecting to " + API_HOST + " to load leagues for province with id: " + provinceId);
             document = Jsoup.connect(API_HOST).get();
         } catch (IOException e) {
+            logger.info("Failed loading leagues for province with id: " + provinceId);
             e.printStackTrace();
         }
 
@@ -45,7 +51,7 @@ public class VolleyScoresCompetitionLoader {
             leagueIds.add(new LeagueId(leagueName, id));
         }
 
-
+        logger.info("Leagues found: " + leagueIds.size());
         return leagueIds;
     }
 
@@ -60,12 +66,14 @@ public class VolleyScoresCompetitionLoader {
         String url = API_HOST + API_PATH + API_QUERY_PARAMS + leagueId.getId();
         Document document = null;
         try {
+            logger.info("Connecting to " + url + " to load league with name: " + leagueId.getName());
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
+            logger.error("Connection with " + url + " failed. Message; " + e.getMessage());
             e.printStackTrace();
         }
 
-        Element gameTableBody = document.select("table.table tbody").get(2);
+        Element gameTableBody = document.select("table.table tbody").last();
 
         ArrayList<Game> games = new ArrayList<>();
         Iterator<Element> iterator = gameTableBody.children().iterator();
@@ -96,9 +104,12 @@ public class VolleyScoresCompetitionLoader {
                 awaySets = Integer.parseInt(result.substring(4, 5));
             }
 
+            logger.debug("Creating game with homeTeam: " + homeTeam + "\tawayTeam: " + awayTeam + "\tdate: " +
+                    date.toString() + "\tsets: " + homeSets + " - " + awaySets);
             games.add(new Game(homeTeam, awayTeam, date, homeSets, awaySets));
         }
 
+        logger.info("Number of games loaded: " + games.size());
         return new League(leagueId, games);
     }
 }

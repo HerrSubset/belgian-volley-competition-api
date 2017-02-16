@@ -19,6 +19,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -46,6 +48,9 @@ public class VolleyBiebLoader {
     private final static String REEKSNAAM = "reeksnaam";
     private static final String REEKSAFKORTING = "reeksafkorting";
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     public List<LeagueId> getLeagueIds(String provinceCode) {
         HttpClient httpClient = HttpClients.createDefault();
         URI uri;
@@ -57,6 +62,8 @@ public class VolleyBiebLoader {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+
+        logger.info("Connecting to " + uri.toString() + " to load leagues for province with code: " + provinceCode);
         HttpPost httpPost = new HttpPost(uri);
         // Request parameters and other properties.
         List<NameValuePair> params = new ArrayList<>(3);
@@ -66,6 +73,7 @@ public class VolleyBiebLoader {
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
+            logger.error("Error during request to " + uri.toString());
             throw new RuntimeException(e);
         }
 
@@ -76,6 +84,7 @@ public class VolleyBiebLoader {
             HttpEntity entity = response.getEntity();
             json = CharStreams.toString(new InputStreamReader(entity.getContent()));
         } catch (IOException e) {
+            logger.error("Error when parsing json received from " + uri.toString());
             throw new RuntimeException(e);
         }
 
@@ -95,6 +104,7 @@ public class VolleyBiebLoader {
         }
 
 
+        logger.info("Number of leagues found: " + ids.size());
         return ids;
     }
 
@@ -110,6 +120,7 @@ public class VolleyBiebLoader {
             games.add(createGame(object));
         }
 
+        logger.info("Games found: " + games.size());
         return new League(leagueId, games);
     }
 
@@ -160,6 +171,7 @@ public class VolleyBiebLoader {
             throw new RuntimeException(e);
         }
 
+        logger.info("Loading league from " + uri.toString());
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(uri);
 
@@ -171,6 +183,7 @@ public class VolleyBiebLoader {
             HttpEntity entity = response.getEntity();
             json = CharStreams.toString(new InputStreamReader(entity.getContent()));
         } catch (IOException e) {
+            logger.error("Error when parsing json received from " + uri.toString());
             throw new RuntimeException(e);
         }
 
