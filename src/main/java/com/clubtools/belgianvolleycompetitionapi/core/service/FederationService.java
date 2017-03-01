@@ -1,7 +1,8 @@
 package com.clubtools.belgianvolleycompetitionapi.core.service;
 
-import com.clubtools.belgianvolleycompetitionapi.core.cache.FederationCache;
+import com.clubtools.belgianvolleycompetitionapi.core.Federation;
 import com.clubtools.belgianvolleycompetitionapi.core.dao.*;
+import com.clubtools.belgianvolleycompetitionapi.integration.FederationLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,50 +17,51 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class FederationService {
 
-    private HashMap<String, FederationCache> routeMap;
-    private Collection<FederationCache> federationCaches;
+    private HashMap<Federation, FederationLoader> routeMap;
+    private Collection<FederationLoader> federationLoaders;
 
 
     @Autowired
-    public FederationService(Collection<FederationCache> federationCaches) {
-        checkNotNull(federationCaches);
-        this.federationCaches = federationCaches;
+    public FederationService(Collection<FederationLoader> federationLoaders) {
+        checkNotNull(federationLoaders);
+        this.federationLoaders = federationLoaders;
 
         routeMap = new HashMap<>();
-        for (FederationCache cache : federationCaches) {
-            routeMap.put(cache.getAbbreviation().toUpperCase(), cache);
+        for (FederationLoader loader : federationLoaders) {
+            routeMap.put(loader.getFederation(), loader);
         }
     }
 
     public TotalOverviewDao getOverview() {
         List<MinimalFederationDao> federations = new ArrayList<>();
 
-        for (FederationCache cache : routeMap.values()) {
-            federations.add(cache.getMinimalDao());
+        for (FederationLoader loader : routeMap.values()) {
+            federations.add(loader.getMinimalDao());
         }
 
         return new TotalOverviewDao(federations);
     }
 
     public FederationDao getFederationLeagues(String abbreviation) {
-        FederationCache federationCache = getCache(abbreviation);
+        FederationLoader federationLoader = getLoader(abbreviation);
 
-        return federationCache.getFederationInfo();
+        return federationLoader.getFederationInfo();
     }
 
     public LeagueDao getLeague(String federationAbbreviation, String leagueSlug) {
-        FederationCache federationCache = getCache(federationAbbreviation);
-        return federationCache.getLeague(leagueSlug);
+        FederationLoader federationLoader = getLoader(federationAbbreviation);
+        return federationLoader.getLeague(leagueSlug);
     }
 
 
-    private FederationCache getCache(String abbreviation) {
+    private FederationLoader getLoader(String abbreviation) {
         // TODO: throw error causing 404 when federation is not found
-        return routeMap.get(abbreviation.toUpperCase());
+        Federation federation = Federation.valueOf(abbreviation.toUpperCase());
+        return routeMap.get(federation);
     }
 
     public TeamDao getTeam(String federationAbbreviation, String leagueSlug, String teamSlug) {
-        FederationCache cache = getCache(federationAbbreviation);
-        return cache.getTeam(leagueSlug, teamSlug);
+        FederationLoader loader = getLoader(federationAbbreviation);
+        return loader.getTeam(leagueSlug, teamSlug);
     }
 }

@@ -1,5 +1,6 @@
 package com.clubtools.belgianvolleycompetitionapi.integration;
 
+import com.clubtools.belgianvolleycompetitionapi.core.Federation;
 import com.clubtools.belgianvolleycompetitionapi.domain.League;
 import com.clubtools.belgianvolleycompetitionapi.domain.LeagueId;
 import com.clubtools.belgianvolleycompetitionapi.integration.shared.VolleyBiebLoader;
@@ -10,13 +11,14 @@ import java.util.List;
 
 
 @Component
-public class VvbLoader implements FederationLoader {
+public class VvbLoader extends FederationLoader {
 
     private static final String PROVINCE_CODE = "0";
     private final VolleyBiebLoader volleyBiebLoader;
 
     @Autowired
     public VvbLoader(VolleyBiebLoader volleyBiebLoader) {
+        super(Federation.VVB);
         this.volleyBiebLoader = volleyBiebLoader;
     }
 

@@ -1,8 +1,9 @@
 package com.clubtools.belgianvolleycompetitionapi.service;
 
-import com.clubtools.belgianvolleycompetitionapi.core.cache.FederationCache;
+import com.clubtools.belgianvolleycompetitionapi.core.Federation;
 import com.clubtools.belgianvolleycompetitionapi.core.dao.*;
 import com.clubtools.belgianvolleycompetitionapi.core.service.FederationService;
+import com.clubtools.belgianvolleycompetitionapi.integration.FederationLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +22,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FederationServiceMockitoTest {
 
-    private static final String CACHE1_NAME = "VVB";
-    private static final String CACHE2_NAME = "KOVV";
+    private static final Federation TEST_FEDERATION_1 = Federation.VVB;
+    private static final Federation TEST_FEDERATION_2 = Federation.KOVV;
     private static final String ABBREVIATION = "vvb";
     private static final String LEAGUE_SLUG = "h2a";
     private static final String TEAM_SLUG = "mendo-booischot-c";
@@ -30,32 +31,30 @@ public class FederationServiceMockitoTest {
     private FederationService service;
 
     @Mock
-    private FederationCache cache1;
+    private FederationLoader loader1;
 
     @Mock
-    private FederationCache cache2;
+    private FederationLoader loader2;
 
     @Before
     public void setUp() {
-        List<FederationCache> federationCaches = Arrays.asList(cache1, cache2);
-        when(cache1.getAbbreviation()).thenReturn(CACHE1_NAME);
-        when(cache2.getAbbreviation()).thenReturn(CACHE2_NAME);
-        service = new FederationService(federationCaches);
+        List<FederationLoader> federationLoaders = Arrays.asList(loader1, loader2);
+        when(loader1.getFederation()).thenReturn(TEST_FEDERATION_1);
+        when(loader2.getFederation()).thenReturn(TEST_FEDERATION_2);
+        service = new FederationService(federationLoaders);
     }
 
     @Test
-    public void getOverviewReturnsDataFromEveryFederationCache() {
+    public void getOverviewReturnsDataFromEveryFederationLoader() {
         MinimalFederationDao dao1 = mock(MinimalFederationDao.class);
         MinimalFederationDao dao2 = mock(MinimalFederationDao.class);
 
-        List<FederationCache> federationCaches = Arrays.asList(cache1, cache2);
-
-        when(cache1.getMinimalDao()).thenReturn(dao1);
-        when(cache2.getMinimalDao()).thenReturn(dao2);
+        when(loader1.getMinimalDao()).thenReturn(dao1);
+        when(loader2.getMinimalDao()).thenReturn(dao2);
 
         TotalOverviewDao overview = service.getOverview();
 
-        verify(cache1).getMinimalDao();
+        verify(loader1).getMinimalDao();
         assertTrue(overview.federations.contains(dao1));
         assertTrue(overview.federations.contains(dao2));
     }
@@ -64,11 +63,11 @@ public class FederationServiceMockitoTest {
     public void getFederationLeaguesREturnsObjectGivenByCache() {
         FederationDao federationDao = mock(FederationDao.class);
 
-        when(cache1.getFederationInfo()).thenReturn(federationDao);
+        when(loader1.getFederationInfo()).thenReturn(federationDao);
 
         FederationDao leagues = service.getFederationLeagues(ABBREVIATION);
 
-        verify(cache1).getFederationInfo();
+        verify(loader1).getFederationInfo();
         assertSame(federationDao, leagues);
     }
 
@@ -76,11 +75,11 @@ public class FederationServiceMockitoTest {
     public void getLeagueRetunsObjectGivenByCache() {
         LeagueDao leagueDao = mock(LeagueDao.class);
 
-        when(cache1.getLeague(LEAGUE_SLUG)).thenReturn(leagueDao);
+        when(loader1.getLeague(LEAGUE_SLUG)).thenReturn(leagueDao);
 
         LeagueDao league = service.getLeague(ABBREVIATION, LEAGUE_SLUG);
 
-        verify(cache1).getLeague(LEAGUE_SLUG);
+        verify(loader1).getLeague(LEAGUE_SLUG);
         assertSame(leagueDao, league);
     }
 
@@ -88,11 +87,11 @@ public class FederationServiceMockitoTest {
     public void getTeamReturnsObjectGivenByCache() {
         TeamDao teamDao = mock(TeamDao.class);
 
-        when(cache1.getTeam(LEAGUE_SLUG, TEAM_SLUG)).thenReturn(teamDao);
+        when(loader1.getTeam(LEAGUE_SLUG, TEAM_SLUG)).thenReturn(teamDao);
 
         TeamDao team = service.getTeam(ABBREVIATION, LEAGUE_SLUG, TEAM_SLUG);
 
-        verify(cache1).getTeam(LEAGUE_SLUG, TEAM_SLUG);
+        verify(loader1).getTeam(LEAGUE_SLUG, TEAM_SLUG);
         assertSame(teamDao, team);
     }
 }

@@ -1,5 +1,6 @@
 package com.clubtools.belgianvolleycompetitionapi.integration;
 
+import com.clubtools.belgianvolleycompetitionapi.core.Federation;
 import com.clubtools.belgianvolleycompetitionapi.domain.League;
 import com.clubtools.belgianvolleycompetitionapi.domain.LeagueId;
 import com.clubtools.belgianvolleycompetitionapi.integration.shared.VolleyScoresCompetitionLoader;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class KlvvLoader implements FederationLoader {
+public class KlvvLoader extends FederationLoader {
 
     private final static String VOLLEYSCORES_FEDERATION_LEAGUES_DIV_ID = "mnu_province_4";
 
@@ -17,6 +18,7 @@ public class KlvvLoader implements FederationLoader {
 
     @Autowired
     public KlvvLoader(VolleyScoresCompetitionLoader loader) {
+        super(Federation.KLVV);
         this.loader = loader;
     }
 
