@@ -10,18 +10,20 @@ public class Game {
     private final Date date;
     private final Integer homeSets;
     private final Integer awaySets;
+    private final Boolean forfait;
 
 
     //**************************************************************************
     //* Constructor
     //**************************************************************************
 
-    public Game(String homeTeam, String awayTeam, Date date, Integer homeSets, Integer awaySets) {
+    public Game(String homeTeam, String awayTeam, Date date, Integer homeSets, Integer awaySets, Boolean forfait) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.date = date;
         this.homeSets = homeSets;
         this.awaySets = awaySets;
+        this.forfait = forfait;
     }
 
 
@@ -49,6 +51,9 @@ public class Game {
         return awaySets;
     }
 
+    public Boolean getForfait() {
+        return forfait;
+    }
 
     //**************************************************************************
     //* Methods

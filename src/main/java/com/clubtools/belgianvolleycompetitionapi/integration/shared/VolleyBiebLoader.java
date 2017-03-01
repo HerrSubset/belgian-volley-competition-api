@@ -147,7 +147,7 @@ public class VolleyBiebLoader {
             throw new RuntimeException(e);
         }
 
-        return new Game(homeTeam, awayTeam, date, homeSets, awaySets);
+        return new Game(homeTeam, awayTeam, date, homeSets, awaySets, null);
     }
 
 

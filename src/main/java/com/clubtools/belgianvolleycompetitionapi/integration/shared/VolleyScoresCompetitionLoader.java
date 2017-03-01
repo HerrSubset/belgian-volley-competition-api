@@ -87,6 +87,7 @@ public class VolleyScoresCompetitionLoader {
             String awayTeam = e.child(6).text().trim();
             String sportsHall = e.child(7).text().trim();
             String result = e.child(8).text().trim();
+            String sets = e.child(9).text().trim();
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date date;
@@ -99,14 +100,26 @@ public class VolleyScoresCompetitionLoader {
 
             Integer homeSets = null;
             Integer awaySets = null;
+            Boolean forfait =  null;
             if (result.length() == 5) {
                 homeSets = Integer.parseInt(result.substring(0, 1));
                 awaySets = Integer.parseInt(result.substring(4, 5));
+                forfait = false;
+            } else if (result.toUpperCase().equals("F")) {
+                logger.info("Found forfait game: " + sets);
+                if (sets.equals("Forfait bezoekers")) {
+                    homeSets = 3;
+                    awaySets = 0;
+                } else {
+                    homeSets = 0;
+                    awaySets = 3;
+                }
+                forfait = true;
             }
 
             logger.debug("Creating game with homeTeam: " + homeTeam + "\tawayTeam: " + awayTeam + "\tdate: " +
                     date.toString() + "\tsets: " + homeSets + " - " + awaySets);
-            games.add(new Game(homeTeam, awayTeam, date, homeSets, awaySets));
+            games.add(new Game(homeTeam, awayTeam, date, homeSets, awaySets, forfait));
         }
 
         logger.info("Number of games loaded: " + games.size());
