@@ -1,15 +1,20 @@
 package com.clubtools.belgianvolleycompetitionapi.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
 public class Game {
-    private String homeTeam;
-    private String awayTeam;
-    private Date date;
-    private Integer homeSets;
-    private Integer awaySets;
+    private final String homeTeam;
+    private final String awayTeam;
+    private final Date date;
+    private final Integer homeSets;
+    private final Integer awaySets;
 
+
+    //**************************************************************************
+    //* Constructor
+    //**************************************************************************
 
     public Game(String homeTeam, String awayTeam, Date date, Integer homeSets, Integer awaySets) {
         this.homeTeam = homeTeam;
@@ -19,6 +24,10 @@ public class Game {
         this.awaySets = awaySets;
     }
 
+
+    //**************************************************************************
+    //* Getters / Setters
+    //**************************************************************************
 
     public String getHomeTeam() {
         return homeTeam;
@@ -38,5 +47,15 @@ public class Game {
 
     public Integer getAwaySets() {
         return awaySets;
+    }
+
+
+    //**************************************************************************
+    //* Methods
+    //**************************************************************************
+
+    public String getDateString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        return simpleDateFormat.format(date);
     }
 }
